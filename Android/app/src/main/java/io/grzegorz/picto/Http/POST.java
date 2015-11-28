@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -30,15 +31,17 @@ public class POST extends AsyncTask<String, String, String> {
     private TextView word;
     private TextView definition;
     private TextToSpeech tts;
+    private LinearLayout resultLayout;
 
-    private final String SERVER_URL = "http://picto.mybluemix.net/upload";
+    private final String SERVER_URL = "http://picto.mybluemix.net/info/upload";
 
 
-    public POST(Activity activity, TextView word, TextView definition, TextToSpeech tts) {
+    public POST(Activity activity, TextView word, TextView definition, TextToSpeech tts, LinearLayout resultLayout) {
         this.activity = activity;
         this.word = word;
         this.definition = definition;
         this.tts = tts;
+        this.resultLayout = resultLayout;
     }
 
     protected String doInBackground(String... urls) {
@@ -60,6 +63,7 @@ public class POST extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
+        System.out.println(result);
         if (result == "NO_TAGS".trim()) {
             this.word.setText("Cannot identify.");
         } else {
@@ -67,7 +71,7 @@ public class POST extends AsyncTask<String, String, String> {
             this.word.setText(result);
 
             String[] definitionParams = {result};
-            new GET(GET.DEFINITION, definitionParams, this.definition, this.tts).execute();
+            new GET(GET.DEFINITION, definitionParams, this.word, this.definition, this.tts, this.resultLayout).execute();
 
         }
     }

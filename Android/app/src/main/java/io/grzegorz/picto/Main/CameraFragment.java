@@ -536,7 +536,7 @@ public class CameraFragment extends Fragment
                         Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
                         new CompareSizesByArea());
                 mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(),
-                        ImageFormat.JPEG, /*maxImages*/10);
+                        ImageFormat.JPEG, /*maxImages*/2);
                 mImageReader.setOnImageAvailableListener(
                         mOnImageAvailableListener, mBackgroundHandler);
 
@@ -720,7 +720,7 @@ public class CameraFragment extends Fragment
                                 mCaptureSession.setRepeatingRequest(mPreviewRequest,
                                         mCaptureCallback, mBackgroundHandler);
                             } catch (CameraAccessException e) {
-                                System.out.println("Damn 2");
+                                openCamera(mTextureView.getWidth(), mTextureView.getHeight());
                                 e.printStackTrace();
                             }
                         }
@@ -733,7 +733,7 @@ public class CameraFragment extends Fragment
                     }, null
             );
         } catch (CameraAccessException e) {
-            System.out.println("Damnnn");
+            openCamera(mTextureView.getWidth(), mTextureView.getHeight());
             e.printStackTrace();
         }
     }
@@ -837,7 +837,7 @@ public class CameraFragment extends Fragment
             // Orientation
             int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-            captureBuilder.set(CaptureRequest.JPEG_QUALITY, (byte) CameraProfile.getJpegEncodingQualityParameter(CameraProfile.QUALITY_LOW));
+            captureBuilder.set(CaptureRequest.JPEG_QUALITY, (byte) CameraProfile.getJpegEncodingQualityParameter(CameraProfile.QUALITY_HIGH));
 
             final CameraCaptureSession.CaptureCallback CaptureCallback
                     = new CameraCaptureSession.CaptureCallback() {

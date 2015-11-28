@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shehabic.droppy.DroppyClickCallbackInterface;
@@ -36,7 +37,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import io.grzegorz.picto.Http.GET;
 import io.grzegorz.picto.Http.POST;
@@ -54,6 +58,13 @@ public class ResultFragment extends Fragment {
     private TextView definition;
     private ImageButton speech;
     private TextToSpeech tts;
+    private LinearLayout resultLayout;
+    private static ArrayList<String> languages;
+    private static String currentLang = "English";
+
+    public static ArrayList<String> getLanguages() {
+        return languages;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,7 +81,7 @@ public class ResultFragment extends Fragment {
 
         compressImage();
 
-        File imageFile = new File(getActivity().getExternalFilesDir(null), "capture.jpg");
+        File imageFile = new File(getActivity().getExternalFilesDir(null), "capture2.jpg");
 
 
         // Get length of file in bytes
@@ -80,6 +91,8 @@ public class ResultFragment extends Fragment {
 
         System.out.println(fileSizeInKB);
 
+
+        resultLayout = (LinearLayout) view.findViewById(R.id.result_fragment);
 
         userImage = (ImageView) view.findViewById(R.id.resultImage);
 
@@ -106,34 +119,58 @@ public class ResultFragment extends Fragment {
         definition.setMovementMethod(new ScrollingMovementMethod());
 
         languageSelect = (Button) view.findViewById(R.id.languageSelect);
-        languageSelect.setVisibility(View.INVISIBLE);
-
-        /*languageSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                int imgResource = R.drawable.ic_expand_more_white_36dp;
-                languageSelect.setCompoundDrawablesWithIntrinsicBounds(0, 0, imgResource, 0);
-            }
-        });
 
         // For now we just support english
         languageSelect.setText("English");
 
-        DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(getActivity(), languageSelect);
+        languages = new ArrayList<String>();
+        languages.add("English");
+        languages.add("French");
+
+        final DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(getActivity(), languageSelect);
         droppyBuilder.addMenuItem(new DroppyMenuItem("English")).addMenuItem(new DroppyMenuItem("French"));
 
         // Set Callback handler
         droppyBuilder.setOnClick(new DroppyClickCallbackInterface() {
             @Override
             public void call(View v, int id) {
-                int imgResource = R.drawable.ic_expand_less_white_36dp;
-                languageSelect.setCompoundDrawablesWithIntrinsicBounds(0, 0, imgResource, 0);
-                Log.d("Clicked on ", String.valueOf(id));
+
+
+                if (!languages.get(id).equals(currentLang)) {
+                    resultLayout.setVisibility(View.INVISIBLE);
+                    languageSelect.setText(languages.get(id));
+
+                    if (languages.get(id).equals("English")) {
+                        tts.setLanguage(Locale.ENGLISH);
+
+                        String[] paramsWord = {word.getText().toString(), "en", currentLang, "WORD"};
+                        new GET(GET.TRANSLATE, paramsWord, word, definition, tts, resultLayout).execute();
+
+                        String[] paramsDefinition = {definition.getText().toString(), "en", currentLang, "DEFINITION"};
+                        new GET(GET.TRANSLATE, paramsDefinition, word, definition, tts, resultLayout).execute();
+
+                        currentLang = "English";
+
+                    } else if (languages.get(id).equals("French")) {
+                        tts.setLanguage(Locale.FRENCH);
+
+                        String[] paramsWord = {word.getText().toString(), "fr", currentLang, "WORD"};
+                        new GET(GET.TRANSLATE, paramsWord, word, definition, tts, resultLayout).execute();
+
+                        String[] paramsDefinition = {definition.getText().toString(), "fr", currentLang, "DEFINITION"};
+                        new GET(GET.TRANSLATE, paramsDefinition, word, definition, tts, resultLayout).execute();
+
+                        currentLang = "French";
+
+                    }
+
+                    // and show loading...
+                }
+
             }
         });
 
-        DroppyMenuPopup droppyMenu = droppyBuilder.build();*/
+        DroppyMenuPopup droppyMenu = droppyBuilder.build();
 
         tts = new TextToSpeech(getActivity().getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -153,13 +190,7 @@ public class ResultFragment extends Fragment {
             }
         });
 
-        new POST(getActivity(), this.word, this.definition, this.tts).execute();
-
-        //this.word.setText("Person");
-
-        //String[] definitionParams = {"Person"};
-        //new GET(GET.DEFINITION, definitionParams, this.definition, this.tts).execute();
-
+        new POST(getActivity(), this.word, this.definition, this.tts, this.resultLayout).execute();
 
     }
 
@@ -265,7 +296,7 @@ public class ResultFragment extends Fragment {
         }
 
         FileOutputStream out = null;
-        String filename = new File(getActivity().getExternalFilesDir(null), "capture.jpg").getPath();
+        String filename = new File(getActivity().getExternalFilesDir(null), "capture2.jpg").getPath();
         try {
             out = new FileOutputStream(filename);
 
