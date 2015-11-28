@@ -25,8 +25,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
 import com.shehabic.droppy.DroppyClickCallbackInterface;
 import com.shehabic.droppy.DroppyMenuItem;
 import com.shehabic.droppy.DroppyMenuPopup;
@@ -58,7 +60,10 @@ public class ResultFragment extends Fragment {
     private TextView definition;
     private ImageButton speech;
     private TextToSpeech tts;
-    private LinearLayout resultLayout;
+    private ImageView resultImage;
+    private RelativeLayout resultInfo;
+    private RelativeLayout loading;
+    private ImageView pulse;
     private static ArrayList<String> languages;
     private static String currentLang = "English";
 
@@ -79,7 +84,13 @@ public class ResultFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
 
+        loading = (RelativeLayout) view.findViewById(R.id.loading);
+
+        pulse = (ImageView) view.findViewById(R.id.pulse);
+        Ion.with(pulse).load("android.resource://io.grzegorz.picto/" + R.drawable.ripple);
+
         compressImage();
+
 
         File imageFile = new File(getActivity().getExternalFilesDir(null), "capture2.jpg");
 
@@ -92,7 +103,8 @@ public class ResultFragment extends Fragment {
         System.out.println(fileSizeInKB);
 
 
-        resultLayout = (LinearLayout) view.findViewById(R.id.result_fragment);
+        resultImage = (ImageView) view.findViewById(R.id.resultImage);
+        resultInfo = (RelativeLayout) view.findViewById(R.id.resultInfo);
 
         userImage = (ImageView) view.findViewById(R.id.resultImage);
 
@@ -137,17 +149,19 @@ public class ResultFragment extends Fragment {
 
 
                 if (!languages.get(id).equals(currentLang)) {
-                    resultLayout.setVisibility(View.INVISIBLE);
+                    resultImage.setVisibility(View.GONE);
+                    resultInfo.setVisibility(View.GONE);
+                    loading.setVisibility(View.VISIBLE);
                     languageSelect.setText(languages.get(id));
 
                     if (languages.get(id).equals("English")) {
                         tts.setLanguage(Locale.ENGLISH);
 
                         String[] paramsWord = {word.getText().toString(), "en", currentLang, "WORD"};
-                        new GET(GET.TRANSLATE, paramsWord, word, definition, tts, resultLayout).execute();
+                        new GET(GET.TRANSLATE, paramsWord, word, definition, tts, resultImage, resultInfo, loading).execute();
 
                         String[] paramsDefinition = {definition.getText().toString(), "en", currentLang, "DEFINITION"};
-                        new GET(GET.TRANSLATE, paramsDefinition, word, definition, tts, resultLayout).execute();
+                        new GET(GET.TRANSLATE, paramsDefinition, word, definition, tts, resultImage, resultInfo, loading).execute();
 
                         currentLang = "English";
 
@@ -155,10 +169,10 @@ public class ResultFragment extends Fragment {
                         tts.setLanguage(Locale.FRENCH);
 
                         String[] paramsWord = {word.getText().toString(), "fr", currentLang, "WORD"};
-                        new GET(GET.TRANSLATE, paramsWord, word, definition, tts, resultLayout).execute();
+                        new GET(GET.TRANSLATE, paramsWord, word, definition, tts, resultImage, resultInfo, loading).execute();
 
                         String[] paramsDefinition = {definition.getText().toString(), "fr", currentLang, "DEFINITION"};
-                        new GET(GET.TRANSLATE, paramsDefinition, word, definition, tts, resultLayout).execute();
+                        new GET(GET.TRANSLATE, paramsDefinition, word, definition, tts, resultImage, resultInfo, loading).execute();
 
                         currentLang = "French";
 
@@ -190,7 +204,7 @@ public class ResultFragment extends Fragment {
             }
         });
 
-        new POST(getActivity(), this.word, this.definition, this.tts, this.resultLayout).execute();
+        new POST(getActivity(), this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
 
     }
 

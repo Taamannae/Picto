@@ -36,4 +36,5 @@ dependencies {
     compile 'org.apache.httpcomponents:httpmime:4.1.1'
     compile 'commons-logging:commons-logging:1.1.1'
     compile 'com.shehabic.droppy:Droppy:0.2.5.2@aar'
+    compile 'com.koushikdutta.ion:ion:2.+'
 }

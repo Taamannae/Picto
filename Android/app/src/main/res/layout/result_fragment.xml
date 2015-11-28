@@ -4,22 +4,47 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:weightSum="2"
-    android:id="@+id/result_fragment"
-    android:visibility="invisible" >
+    android:id="@+id/result_fragment" >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loading"
+        android:visibility="visible" >
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/logo"/>
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/pulse"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@id/logo" />
+
+    </RelativeLayout>
 
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/resultImage" />
+        android:id="@+id/resultImage"
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-
+        android:layout_weight="1"
+        android:id="@+id/resultInfo"
+        android:visibility="invisible">
 
         <ImageView
             android:layout_width="match_parent"

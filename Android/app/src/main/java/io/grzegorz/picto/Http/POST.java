@@ -8,7 +8,9 @@ import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -31,17 +33,21 @@ public class POST extends AsyncTask<String, String, String> {
     private TextView word;
     private TextView definition;
     private TextToSpeech tts;
-    private LinearLayout resultLayout;
+    private ImageView resultImage;
+    private RelativeLayout resultInfo;
+    private RelativeLayout loading;
 
     private final String SERVER_URL = "http://picto.mybluemix.net/info/upload";
 
 
-    public POST(Activity activity, TextView word, TextView definition, TextToSpeech tts, LinearLayout resultLayout) {
+    public POST(Activity activity, TextView word, TextView definition, TextToSpeech tts, ImageView resultImage, RelativeLayout resultInfo, RelativeLayout loading) {
         this.activity = activity;
         this.word = word;
         this.definition = definition;
         this.tts = tts;
-        this.resultLayout = resultLayout;
+        this.resultImage = resultImage;
+        this.resultInfo = resultInfo;
+        this.loading = loading;
     }
 
     protected String doInBackground(String... urls) {
@@ -71,7 +77,7 @@ public class POST extends AsyncTask<String, String, String> {
             this.word.setText(result);
 
             String[] definitionParams = {result};
-            new GET(GET.DEFINITION, definitionParams, this.word, this.definition, this.tts, this.resultLayout).execute();
+            new GET(GET.DEFINITION, definitionParams, this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
 
         }
     }
@@ -111,7 +117,7 @@ public class POST extends AsyncTask<String, String, String> {
         StringBuilder builder = new StringBuilder();
         try {
             reader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
+            String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line);
             }

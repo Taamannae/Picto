@@ -4,7 +4,9 @@ import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -31,25 +33,33 @@ public class GET extends AsyncTask<String, String, String> {
     private TextView definition;
     private TextToSpeech tts;
     private TextView word;
+    private RelativeLayout loading;
 
-    private LinearLayout resultLayout;
+    private ImageView resultImage;
+    private RelativeLayout resultInfo;
 
     private String SERVER_URL = "http://picto.mybluemix.net/";
 
-    public GET(int request, String[] params, TextView word, TextView definition, TextToSpeech tts, LinearLayout resultLayout) {
+    public GET(int request, String[] params, TextView word, TextView definition, TextToSpeech tts, ImageView resultImage, RelativeLayout resultInfo, RelativeLayout loading) {
         this.request = request;
         this.params = params;
         this.definition = definition;
         this.tts = tts;
-        this.resultLayout = resultLayout;
+        this.resultImage = resultImage;
+        this.resultInfo = resultInfo;
         this.word = word;
+        this.loading = loading;
     }
 
     protected String doInBackground(String... urls) {
 
         if (this.request == DEFINITION) {
-            SERVER_URL += "info/definition?word=" + params[0];
-            System.out.println(SERVER_URL);
+            try {
+                SERVER_URL += "info/definition?word=" + URLEncoder.encode(params[0], "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                return "Error";
+            }
         } else if (this.request == TRANSLATE) {
             try {
                 SERVER_URL += "info/translate?text=" + URLEncoder.encode(params[0], "utf-8") + "&target=" + params[1] + "&source=" + params[2];
@@ -67,8 +77,6 @@ public class GET extends AsyncTask<String, String, String> {
 
             conn.setRequestMethod("GET");
             conn.setRequestProperty("User-Agent", "Mozilla/5.0");
-
-            System.out.println(conn.getResponseCode());
 
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String input;
@@ -97,15 +105,18 @@ public class GET extends AsyncTask<String, String, String> {
         System.out.println(result);
         if (this.request == DEFINITION && result != "Error") {
             this.definition.setText(result);
-            this.resultLayout.setVisibility(View.VISIBLE);
+            this.loading.setVisibility(View.GONE);
+            this.resultImage.setVisibility(View.VISIBLE);
+            this.resultInfo.setVisibility(View.VISIBLE);
         } else if (this.request == TRANSLATE && result != "Error") {
             if (this.params[3] == "WORD") {
                 this.word.setText(result);
             } else if (this.params[3] == "DEFINITION") {
                 this.definition.setText(result);
-                this.resultLayout.setVisibility(View.VISIBLE);
+                this.loading.setVisibility(View.GONE);
+                this.resultImage.setVisibility(View.VISIBLE);
+                this.resultInfo.setVisibility(View.VISIBLE);
             }
-            // set the new language here
         } else {
             // show err layout
         }
