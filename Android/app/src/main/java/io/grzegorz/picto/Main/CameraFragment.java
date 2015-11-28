@@ -720,7 +720,6 @@ public class CameraFragment extends Fragment
                                 mCaptureSession.setRepeatingRequest(mPreviewRequest,
                                         mCaptureCallback, mBackgroundHandler);
                             } catch (CameraAccessException e) {
-                                openCamera(mTextureView.getWidth(), mTextureView.getHeight());
                                 e.printStackTrace();
                             }
                         }
@@ -733,7 +732,6 @@ public class CameraFragment extends Fragment
                     }, null
             );
         } catch (CameraAccessException e) {
-            openCamera(mTextureView.getWidth(), mTextureView.getHeight());
             e.printStackTrace();
         }
     }
@@ -861,9 +859,9 @@ public class CameraFragment extends Fragment
                     yesButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //closeCamera();
                             SectionsPagerAdapter.setResultMode(true);
                             MainActivity.getAdapter().notifyDataSetChanged();
+                            closeCamera();
                         }
                     });
 
