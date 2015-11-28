@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -28,16 +29,16 @@ public class POST extends AsyncTask<String, String, String> {
     private Activity activity;
     private TextView word;
     private TextView definition;
-    private ImageButton speech;
+    private TextToSpeech tts;
 
     private final String SERVER_URL = "http://picto.mybluemix.net/upload";
 
 
-    public POST(Activity activity, TextView word, TextView definition, ImageButton speech) {
+    public POST(Activity activity, TextView word, TextView definition, TextToSpeech tts) {
         this.activity = activity;
         this.word = word;
         this.definition = definition;
-        this.speech = speech;
+        this.tts = tts;
     }
 
     protected String doInBackground(String... urls) {
@@ -59,16 +60,15 @@ public class POST extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        if (result == "NO_TAGS") {
-            this.word.setText("Cannot identify");
+        if (result == "NO_TAGS".trim()) {
+            this.word.setText("Cannot identify.");
         } else {
+
             this.word.setText(result);
 
             String[] definitionParams = {result};
-            new GET(GET.DEFINITION, definitionParams, this.definition, this.speech).execute();
+            new GET(GET.DEFINITION, definitionParams, this.definition, this.tts).execute();
 
-            //String[] speechParams = {result};
-            //new GET(GET.SPEECH, speechParams, this.definition, this.speech).execute();
         }
     }
 

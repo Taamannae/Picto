@@ -1,7 +1,7 @@
 applications:
 - path: .
-  memory: 256M
-  instances: 1
+  memory: 1000M
+  instances: 2
   domain: mybluemix.net
   name: Picto
   host: picto

@@ -720,6 +720,7 @@ public class CameraFragment extends Fragment
                                 mCaptureSession.setRepeatingRequest(mPreviewRequest,
                                         mCaptureCallback, mBackgroundHandler);
                             } catch (CameraAccessException e) {
+                                System.out.println("Damn 2");
                                 e.printStackTrace();
                             }
                         }

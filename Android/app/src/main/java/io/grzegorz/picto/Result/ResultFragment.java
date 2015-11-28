@@ -13,7 +13,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.TextureView;
@@ -28,10 +30,13 @@ import com.shehabic.droppy.DroppyClickCallbackInterface;
 import com.shehabic.droppy.DroppyMenuItem;
 import com.shehabic.droppy.DroppyMenuPopup;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 
 import io.grzegorz.picto.Http.GET;
 import io.grzegorz.picto.Http.POST;
@@ -48,6 +53,7 @@ public class ResultFragment extends Fragment {
     private TextView word;
     private TextView definition;
     private ImageButton speech;
+    private TextToSpeech tts;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,7 +103,7 @@ public class ResultFragment extends Fragment {
 
         word = (TextView) view.findViewById(R.id.word);
         definition = (TextView) view.findViewById(R.id.definition);
-        speech = (ImageButton) view.findViewById(R.id.speech);
+        definition.setMovementMethod(new ScrollingMovementMethod());
 
         languageSelect = (Button) view.findViewById(R.id.languageSelect);
         languageSelect.setVisibility(View.INVISIBLE);
@@ -129,15 +135,31 @@ public class ResultFragment extends Fragment {
 
         DroppyMenuPopup droppyMenu = droppyBuilder.build();*/
 
-        //new POST(getActivity(), this.word, this.definition, this.speech).execute();
+        tts = new TextToSpeech(getActivity().getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR)
+                    tts.setLanguage(Locale.ENGLISH);
+            }
+        });
 
-        this.word.setText("Person");
+
+        speech = (ImageButton) view.findViewById(R.id.speech);
+
+        speech.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tts.speak(word.getText().toString(), TextToSpeech.QUEUE_FLUSH, null, null);
+            }
+        });
+
+        new POST(getActivity(), this.word, this.definition, this.tts).execute();
+
+        //this.word.setText("Person");
 
         //String[] definitionParams = {"Person"};
-        //new GET(GET.DEFINITION, definitionParams, this.definition, this.speech).execute();
+        //new GET(GET.DEFINITION, definitionParams, this.definition, this.tts).execute();
 
-        String[] speechParams = {"Person"};
-        new GET(GET.SPEECH, speechParams, this.definition, this.speech).execute();
 
     }
 

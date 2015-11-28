@@ -1,6 +1,7 @@
 package io.grzegorz.picto.Http;
 
 import android.os.AsyncTask;
+import android.speech.tts.TextToSpeech;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -12,27 +13,27 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 
 
 public class GET extends AsyncTask<String, String, String> {
 
     public static final int DEFINITION = 0;
     public static final int TRANSLATE = 1;
-    public static final int SPEECH = 2;
 
     private int request;
     private String[] params;
 
     private TextView definition;
-    private ImageButton speech;
+    private TextToSpeech tts;
 
     private String SERVER_URL = "http://picto.mybluemix.net/";
 
-    public GET(int request, String[] params, TextView definition, ImageButton speech) {
+    public GET(int request, String[] params, TextView definition, TextToSpeech tts) {
         this.request = request;
         this.params = params;
         this.definition = definition;
-        this.speech = speech;
+        this.tts = tts;
     }
 
     protected String doInBackground(String... urls) {
@@ -42,9 +43,7 @@ public class GET extends AsyncTask<String, String, String> {
             System.out.println(SERVER_URL);
         } else if (this.request == TRANSLATE) {
             SERVER_URL += "info/translate?text=" + params[0] + "&target=" + params[1];
-        } else if (this.request == SPEECH) {
-            SERVER_URL += "info/speech?word=" + params[0];
-        } else {
+        }  else {
             return "Invalid request";
         }
 
@@ -84,8 +83,9 @@ public class GET extends AsyncTask<String, String, String> {
         System.out.println(result);
         if (this.request == DEFINITION) {
             this.definition.setText(result);
-        } else if (this.request == SPEECH) {
-
+        } else if (this.request == TRANSLATE) {
+            // set the new language here
+            //tts.setLanguage(Locale.CHINESE);
         }
         System.out.println(result);
     }

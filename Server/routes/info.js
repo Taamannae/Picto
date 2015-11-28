@@ -41,44 +41,4 @@ router.get('/translate', function(req, res) {
   });
 });
 
-router.get('/speech', function(req, res) {
-  var text_to_speech = watson.text_to_speech({
-    username: process.env.WATSON_SPEECH_USERNAME,
-    password: process.env.WATSON_SPEECH_PASSWORD,
-    version: 'v1'
-  });
-
-  var name = randomString();
-
-  while (fs.existsSync(path.join(__dirname, '../speech', name))) {
-    name = randomString();
-  }
-
-  console.log(name);
-  var params = {
-    text: req.query.word,
-    voice: 'en-US_AllisonVoice',
-    accept: 'audio/ogg'
-  };
-
-  var soundStream = fs.createWriteStream(path.join(__dirname, '../speech', name));
-
-  soundStream.on('close', function() {
-    res.sendFile(path.join(__dirname, '../speech', name), function() {
-      shelljs.rm('-f', path.join(__dirname, '../speech', name));
-    });
-  });
-
-  text_to_speech.synthesize(params).pipe(soundStream);
-
-});
-
-function randomString() {
-    var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    var result = '';
-    for (var i = 25; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
-    return result + '.ogg';
-}
-
-
 module.exports = router;
