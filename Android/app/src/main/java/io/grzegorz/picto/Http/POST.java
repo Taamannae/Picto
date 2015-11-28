@@ -37,8 +37,9 @@ public class POST extends AsyncTask<String, String, String> {
     private RelativeLayout resultInfo;
     private RelativeLayout loading;
 
+    private static boolean primary = true;
     private final String SERVER_URL = "http://picto.mybluemix.net/info/upload";
-
+    private final String SERVER_URL_SECONDARY = "http://picto.mybluemix.net/upload";
 
     public POST(Activity activity, TextView word, TextView definition, TextToSpeech tts, ImageView resultImage, RelativeLayout resultInfo, RelativeLayout loading) {
         this.activity = activity;
@@ -51,7 +52,6 @@ public class POST extends AsyncTask<String, String, String> {
     }
 
     protected String doInBackground(String... urls) {
-
         Bitmap bm = BitmapFactory.decodeFile(new File(this.activity.getExternalFilesDir(null), "capture.jpg").getPath());
         String fileName = "capture.jpg";
 
@@ -62,23 +62,36 @@ public class POST extends AsyncTask<String, String, String> {
         MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
         reqEntity.addPart("image", contentPart);
 
-        String response = multipost(SERVER_URL, reqEntity);
+        String response;
+
+        if (primary) {
+            response = multipost(SERVER_URL, reqEntity);
+        } else {
+            response = multipost(SERVER_URL_SECONDARY, reqEntity);
+        }
 
         return response;
     }
 
     @Override
     protected void onPostExecute(String result) {
-        System.out.println(result);
-        if (result == "NO_TAGS".trim()) {
-            this.word.setText("Cannot identify.");
+        if (result == null) {
+            System.out.println("Using secondary");
+            primary = false;
+            new POST(this.activity, this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
         } else {
+            primary = true;
+            System.out.println(result);
+            if (result.equals("NO_TAGS".trim())) {
+                this.word.setText("Cannot identify.");
+            } else {
 
-            this.word.setText(result);
+                this.word.setText(result);
 
-            String[] definitionParams = {result};
-            new GET(GET.DEFINITION, definitionParams, this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
+                String[] definitionParams = {result};
+                new GET(GET.DEFINITION, definitionParams, this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
 
+            }
         }
     }
 
