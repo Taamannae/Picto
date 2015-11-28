@@ -1,6 +1,10 @@
 package io.grzegorz.picto.Http;
 
 import android.os.AsyncTask;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,23 +23,29 @@ public class GET extends AsyncTask<String, String, String> {
     private int request;
     private String[] params;
 
+    private TextView definition;
+    private ImageButton speech;
+
     private String SERVER_URL = "http://picto.mybluemix.net/";
 
-    public GET(int request, String[] params) {
+    public GET(int request, String[] params, TextView definition, ImageButton speech) {
         this.request = request;
         this.params = params;
+        this.definition = definition;
+        this.speech = speech;
     }
 
     protected String doInBackground(String... urls) {
 
         if (this.request == DEFINITION) {
-            SERVER_URL += "definition?word=" + params[0];
+            SERVER_URL += "info/definition?word=" + params[0];
+            System.out.println(SERVER_URL);
         } else if (this.request == TRANSLATE) {
-            SERVER_URL += "translate?text=" + params[0] + "&target=" + params[1];
+            SERVER_URL += "info/translate?text=" + params[0] + "&target=" + params[1];
         } else if (this.request == SPEECH) {
-            SERVER_URL += "speech?word=" + params[0];
+            SERVER_URL += "info/speech?word=" + params[0];
         } else {
-            return "Invalid request.";
+            return "Invalid request";
         }
 
         try {
@@ -45,7 +55,7 @@ public class GET extends AsyncTask<String, String, String> {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            //int response = conn.getResponseCode();
+            System.out.println(conn.getResponseCode());
 
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String input;
@@ -58,7 +68,7 @@ public class GET extends AsyncTask<String, String, String> {
 
             in.close();
 
-            return input;
+            return response.toString();
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -66,11 +76,17 @@ public class GET extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
 
-        return "Error.";
+        return "Error";
     }
 
     @Override
     protected void onPostExecute(String result) {
+        System.out.println(result);
+        if (this.request == DEFINITION) {
+            this.definition.setText(result);
+        } else if (this.request == SPEECH) {
+
+        }
         System.out.println(result);
     }
 }

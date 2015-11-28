@@ -3,7 +3,11 @@ package io.grzegorz.picto.Http;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -22,12 +26,18 @@ import java.net.URL;
 
 public class POST extends AsyncTask<String, String, String> {
     private Activity activity;
+    private TextView word;
+    private TextView definition;
+    private ImageButton speech;
 
     private final String SERVER_URL = "http://picto.mybluemix.net/upload";
 
 
-    public POST(Activity activity) {
+    public POST(Activity activity, TextView word, TextView definition, ImageButton speech) {
         this.activity = activity;
+        this.word = word;
+        this.definition = definition;
+        this.speech = speech;
     }
 
     protected String doInBackground(String... urls) {
@@ -49,15 +59,25 @@ public class POST extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        System.out.println(result);
+        if (result == "NO_TAGS") {
+            this.word.setText("Cannot identify");
+        } else {
+            this.word.setText(result);
+
+            String[] definitionParams = {result};
+            new GET(GET.DEFINITION, definitionParams, this.definition, this.speech).execute();
+
+            //String[] speechParams = {result};
+            //new GET(GET.SPEECH, speechParams, this.definition, this.speech).execute();
+        }
     }
 
     private static String multipost(String urlString, MultipartEntity reqEntity) {
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(20000);
+            conn.setConnectTimeout(30000);
             conn.setRequestMethod("POST");
             conn.setUseCaches(false);
             conn.setDoInput(true);

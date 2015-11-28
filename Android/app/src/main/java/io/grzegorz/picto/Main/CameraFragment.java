@@ -732,6 +732,7 @@ public class CameraFragment extends Fragment
                     }, null
             );
         } catch (CameraAccessException e) {
+            System.out.println("Damnnn");
             e.printStackTrace();
         }
     }

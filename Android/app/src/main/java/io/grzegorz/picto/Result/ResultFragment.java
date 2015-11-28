@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,20 +19,35 @@ import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.shehabic.droppy.DroppyClickCallbackInterface;
+import com.shehabic.droppy.DroppyMenuItem;
+import com.shehabic.droppy.DroppyMenuPopup;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import io.grzegorz.picto.Http.GET;
+import io.grzegorz.picto.Http.POST;
+import io.grzegorz.picto.Main.MainActivity;
+import io.grzegorz.picto.Main.SectionsPagerAdapter;
 import io.grzegorz.picto.R;
 
 
 public class ResultFragment extends Fragment {
 
     private ImageView userImage;
+    private ImageButton backToCamera;
+    private Button languageSelect;
+    private TextView word;
+    private TextView definition;
+    private ImageButton speech;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,8 +77,6 @@ public class ResultFragment extends Fragment {
 
         userImage = (ImageView) view.findViewById(R.id.resultImage);
 
-
-
         if (imageFile.exists()) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
@@ -70,6 +84,60 @@ public class ResultFragment extends Fragment {
 
             userImage.setImageBitmap(bitmap);
         }
+
+        backToCamera = (ImageButton) view.findViewById(R.id.backToCamera);
+
+        backToCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SectionsPagerAdapter.setResultMode(false);
+                MainActivity.getAdapter().notifyDataSetChanged();
+            }
+        });
+
+        word = (TextView) view.findViewById(R.id.word);
+        definition = (TextView) view.findViewById(R.id.definition);
+        speech = (ImageButton) view.findViewById(R.id.speech);
+
+        languageSelect = (Button) view.findViewById(R.id.languageSelect);
+        languageSelect.setVisibility(View.INVISIBLE);
+
+        /*languageSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int imgResource = R.drawable.ic_expand_more_white_36dp;
+                languageSelect.setCompoundDrawablesWithIntrinsicBounds(0, 0, imgResource, 0);
+            }
+        });
+
+        // For now we just support english
+        languageSelect.setText("English");
+
+        DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(getActivity(), languageSelect);
+        droppyBuilder.addMenuItem(new DroppyMenuItem("English")).addMenuItem(new DroppyMenuItem("French"));
+
+        // Set Callback handler
+        droppyBuilder.setOnClick(new DroppyClickCallbackInterface() {
+            @Override
+            public void call(View v, int id) {
+                int imgResource = R.drawable.ic_expand_less_white_36dp;
+                languageSelect.setCompoundDrawablesWithIntrinsicBounds(0, 0, imgResource, 0);
+                Log.d("Clicked on ", String.valueOf(id));
+            }
+        });
+
+        DroppyMenuPopup droppyMenu = droppyBuilder.build();*/
+
+        //new POST(getActivity(), this.word, this.definition, this.speech).execute();
+
+        this.word.setText("Person");
+
+        //String[] definitionParams = {"Person"};
+        //new GET(GET.DEFINITION, definitionParams, this.definition, this.speech).execute();
+
+        String[] speechParams = {"Person"};
+        new GET(GET.SPEECH, speechParams, this.definition, this.speech).execute();
 
     }
 
