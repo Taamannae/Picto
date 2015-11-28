@@ -1,0 +1,19 @@
+applications:
+- path: .
+  memory: 256M
+  instances: 1
+  domain: mybluemix.net
+  name: Picto
+  host: picto
+  disk_quota: 1024M
+  services:
+  - Language Translation-6j
+  - Text to Speech-e6
+  - AlchemyAPI-zo
+  env:
+    WORDNIK: 377cb6de03281c0c33004013a370bf8feefd377f6572e6ebf
+    ALCHEMY_KEY: b31acf199a5f3570c042dd23fe14badbe40a8cbd
+    WATSON_TRANSLATE_USERNAME: af99cf3e-a257-4f3d-8274-96dc96ca2e1c
+    WATSON_TRANSLATE_PASSWORD: e03gCzHfOVvL
+    WATSON_SPEECH_USERNAME: 08348d81-d5e7-4759-bc9c-f543e859b810
+    WATSON_SPEECH_PASSWORD: r3JQfGVlGxYq
