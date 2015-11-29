@@ -53,12 +53,12 @@ public class POST extends AsyncTask<String, String, String> {
 
     protected String doInBackground(String... urls) {
         Bitmap bm = BitmapFactory.decodeFile(new File(this.activity.getExternalFilesDir(null), "capture.jpg").getPath());
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bm, 525, 400, true);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bm, 500, 375, true);
 
         String fileName = "capture.jpg";
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 75, bos);
         ContentBody contentPart = new ByteArrayBody(bos.toByteArray(), fileName);
 
         MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
