@@ -82,7 +82,7 @@ public class POST extends AsyncTask<String, String, String> {
             this.word.setText("Cannot identify.");
             primary = true;
         } else {
-            if (result.equals("NO_TAGS") && primary) {
+            if ((result == null || result.equals("NO_TAGS")) && primary) {
                 primary = false;
                 new POST(this.activity, this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
             } else {
