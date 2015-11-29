@@ -38,8 +38,8 @@ public class POST extends AsyncTask<String, String, String> {
     private RelativeLayout loading;
 
     private static boolean primary = true;
-    private final String SERVER_URL = "http://picto.mybluemix.net/info/upload";
-    private final String SERVER_URL_SECONDARY = "http://picto.mybluemix.net/upload";
+    private final String SERVER_URL = "http://picto.mybluemix.net/upload";
+    private final String SERVER_URL_SECONDARY = "http://picto.mybluemix.net/info/upload";
 
     public POST(Activity activity, TextView word, TextView definition, TextToSpeech tts, ImageView resultImage, RelativeLayout resultInfo, RelativeLayout loading) {
         this.activity = activity;
@@ -53,10 +53,12 @@ public class POST extends AsyncTask<String, String, String> {
 
     protected String doInBackground(String... urls) {
         Bitmap bm = BitmapFactory.decodeFile(new File(this.activity.getExternalFilesDir(null), "capture.jpg").getPath());
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bm, 525, 400, true);
+
         String fileName = "capture.jpg";
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 0, bos);
+        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
         ContentBody contentPart = new ByteArrayBody(bos.toByteArray(), fileName);
 
         MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -75,22 +77,19 @@ public class POST extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        if (result == null) {
-            System.out.println("Using secondary");
-            primary = false;
-            new POST(this.activity, this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
-        } else {
-            primary = true;
-            System.out.println(result);
-            if (result.equals("NO_TAGS".trim())) {
-                this.word.setText("Cannot identify.");
-            } else {
 
+        if (result == null && !primary) {
+            this.word.setText("Cannot identify.");
+            primary = true;
+        } else {
+            if (result.equals("NO_TAGS") && primary) {
+                primary = false;
+                new POST(this.activity, this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
+            } else {
                 this.word.setText(result);
 
                 String[] definitionParams = {result};
                 new GET(GET.DEFINITION, definitionParams, this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
-
             }
         }
     }

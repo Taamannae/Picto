@@ -23,6 +23,7 @@ var getTags = function(imagePath, next) {
       if (res.status === "OK") {
         next(false, res.imageKeywords);
       } else if (res.status === "ERROR") {
+        console.log(res.statusInfo);
         next(true, {"Error" : "Cannot get image keywords. Reason: " + res.statusInfo});
       }
   });

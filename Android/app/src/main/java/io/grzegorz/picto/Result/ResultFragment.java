@@ -177,8 +177,6 @@ public class ResultFragment extends Fragment {
                         currentLang = "French";
 
                     }
-
-                    // and show loading...
                 }
 
             }
