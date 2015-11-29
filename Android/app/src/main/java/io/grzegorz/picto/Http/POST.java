@@ -3,13 +3,8 @@ package io.grzegorz.picto.Http;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.AsyncTask;
-import android.speech.tts.TextToSpeech;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,7 +27,6 @@ public class POST extends AsyncTask<String, String, String> {
     private Activity activity;
     private TextView word;
     private TextView definition;
-    private TextToSpeech tts;
     private ImageView resultImage;
     private RelativeLayout resultInfo;
     private RelativeLayout loading;
@@ -41,11 +35,10 @@ public class POST extends AsyncTask<String, String, String> {
     private final String SERVER_URL = "http://picto.mybluemix.net/upload";
     private final String SERVER_URL_SECONDARY = "http://picto.mybluemix.net/info/upload";
 
-    public POST(Activity activity, TextView word, TextView definition, TextToSpeech tts, ImageView resultImage, RelativeLayout resultInfo, RelativeLayout loading) {
+    public POST(Activity activity, TextView word, TextView definition, ImageView resultImage, RelativeLayout resultInfo, RelativeLayout loading) {
         this.activity = activity;
         this.word = word;
         this.definition = definition;
-        this.tts = tts;
         this.resultImage = resultImage;
         this.resultInfo = resultInfo;
         this.loading = loading;
@@ -84,12 +77,12 @@ public class POST extends AsyncTask<String, String, String> {
         } else {
             if ((result == null || result.equals("NO_TAGS")) && primary) {
                 primary = false;
-                new POST(this.activity, this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
+                new POST(this.activity, this.word, this.definition, this.resultImage, this.resultInfo, this.loading).execute();
             } else {
                 this.word.setText(result);
 
                 String[] definitionParams = {result};
-                new GET(GET.DEFINITION, definitionParams, this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
+                new GET(GET.DEFINITION, definitionParams, this.word, this.definition, this.resultImage, this.resultInfo, this.loading).execute();
             }
         }
     }

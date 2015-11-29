@@ -1,30 +1,23 @@
 package io.grzegorz.picto.Result;
 
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
-import android.media.Image;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,16 +26,12 @@ import com.shehabic.droppy.DroppyClickCallbackInterface;
 import com.shehabic.droppy.DroppyMenuItem;
 import com.shehabic.droppy.DroppyMenuPopup;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import io.grzegorz.picto.Http.GET;
 import io.grzegorz.picto.Http.POST;
@@ -67,10 +56,6 @@ public class ResultFragment extends Fragment {
     private static ArrayList<String> languages;
     private static String currentLang = "English";
 
-    public static ArrayList<String> getLanguages() {
-        return languages;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -91,17 +76,7 @@ public class ResultFragment extends Fragment {
 
         compressImage();
 
-
         File imageFile = new File(getActivity().getExternalFilesDir(null), "capture2.jpg");
-
-
-        // Get length of file in bytes
-        long fileSizeInBytes = imageFile.length();
-        // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
-        long fileSizeInKB = fileSizeInBytes / 1024;
-
-        System.out.println(fileSizeInKB);
-
 
         resultImage = (ImageView) view.findViewById(R.id.resultImage);
         resultInfo = (RelativeLayout) view.findViewById(R.id.resultInfo);
@@ -158,10 +133,10 @@ public class ResultFragment extends Fragment {
                         tts.setLanguage(Locale.ENGLISH);
 
                         String[] paramsWord = {word.getText().toString(), "en", currentLang, "WORD"};
-                        new GET(GET.TRANSLATE, paramsWord, word, definition, tts, resultImage, resultInfo, loading).execute();
+                        new GET(GET.TRANSLATE, paramsWord, word, definition, resultImage, resultInfo, loading).execute();
 
                         String[] paramsDefinition = {definition.getText().toString(), "en", currentLang, "DEFINITION"};
-                        new GET(GET.TRANSLATE, paramsDefinition, word, definition, tts, resultImage, resultInfo, loading).execute();
+                        new GET(GET.TRANSLATE, paramsDefinition, word, definition, resultImage, resultInfo, loading).execute();
 
                         currentLang = "English";
 
@@ -169,10 +144,10 @@ public class ResultFragment extends Fragment {
                         tts.setLanguage(Locale.FRENCH);
 
                         String[] paramsWord = {word.getText().toString(), "fr", currentLang, "WORD"};
-                        new GET(GET.TRANSLATE, paramsWord, word, definition, tts, resultImage, resultInfo, loading).execute();
+                        new GET(GET.TRANSLATE, paramsWord, word, definition, resultImage, resultInfo, loading).execute();
 
                         String[] paramsDefinition = {definition.getText().toString(), "fr", currentLang, "DEFINITION"};
-                        new GET(GET.TRANSLATE, paramsDefinition, word, definition, tts, resultImage, resultInfo, loading).execute();
+                        new GET(GET.TRANSLATE, paramsDefinition, word, definition, resultImage, resultInfo, loading).execute();
 
                         currentLang = "French";
 
@@ -202,7 +177,7 @@ public class ResultFragment extends Fragment {
             }
         });
 
-        new POST(getActivity(), this.word, this.definition, this.tts, this.resultImage, this.resultInfo, this.loading).execute();
+        new POST(getActivity(), this.word, this.definition, this.resultImage, this.resultInfo, this.loading).execute();
 
     }
 
@@ -307,7 +282,7 @@ public class ResultFragment extends Fragment {
             e.printStackTrace();
         }
 
-        FileOutputStream out = null;
+        FileOutputStream out;
         String filename = new File(getActivity().getExternalFilesDir(null), "capture2.jpg").getPath();
         try {
             out = new FileOutputStream(filename);
