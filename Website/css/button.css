@@ -1,0 +1,68 @@
+.btn 
+{
+	border: 1px solid #ffffff;
+	font-family: "Roboto";
+    color: #ffffff !important;
+    font-size: 16px;
+	cursor: pointer;
+	display: inline-block;
+	margin: 0px 30px 5px 40px;
+	font-weight: 100;
+	position: relative;
+    background: transparent;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+    border-radius: 4px !important;
+    text-align: center !important;
+    
+    	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border: none;
+}
+nav>a>li{
+    color: white;
+}
+
+.btn a{
+    color: #fff !important;
+}
+
+.btn:hover{
+    border: 1px solid #ffffff;
+    background: #454349;
+    color: #ffffff !important;
+}
+
+.btn-dark:hover{
+    border: 1px solid #1F1D28;
+    background: #454349;
+    color: #ffffff;
+}
+
+
+.btn-dark{
+    border: 1px solid #1F1D28;
+	font-family: "Roboto";
+    color: #1F1D28;
+	font-size: inherit;
+	cursor: pointer;
+	font-weight: 400;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px 70px 10px 70px;
+    background: transparent;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+    border-radius: 4px !important;
+    text-align: center !important;
+    
+    	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}

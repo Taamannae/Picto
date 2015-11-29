@@ -1,0 +1,487 @@
+body{
+    font-family: "Roboto" !important;
+    font-size: 16px;
+        margin: 0px;
+    background-color: #2F2D3A;
+}
+
+
+.navbar{
+    padding: 20px 20px 10px 20px;
+  font-family: "Roboto" !important;
+  font-size: 30px;
+  margin: 0px;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+  background-color: #1F1D28;
+    border: none;
+}
+
+.navbar-header a{
+    color: #ffffff;
+    background: -webkit-linear-gradient(#F05A28, #AB1540);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.navbar a{
+    color: white;
+    transition: all 0.5s ease;
+}
+
+.navbar a:hover{
+    text-decoration: none;
+    color: grey;
+}
+
+
+
+.jumbotron{
+    height:400px;
+    background-color: #2F2D3A;
+    background: url(../img/bg.png);
+    background-position: center top;
+    margin: 0px;
+}
+
+.play{
+    width: 200px;
+    margin-left: 80px;
+}
+
+.logo{
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logos{
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.jumbotron h1{
+    color: #ffffff;
+    font-weight: 100;
+    text-transform: uppercase;
+}
+
+.jumbotron .container{
+    margin-top: 40px;
+    
+}
+
+.display-pic{
+
+    height: 300px;
+    width: 50%;
+    margin: 0px;
+    padding: 0px;
+    background-color: #2F2D3A;
+    display: inline-block;
+}
+
+
+.pic-container{
+    width: 100%;
+    background-color: #2F2D3A;
+    margin: 0px;
+    display: block;
+}
+
+.take-picture{
+    float: left;
+    position: absolute;
+    overflow: hidden;
+    background: url(../img/vacationphotos.jpg);
+    background-size: 100%;
+    background-position: center;
+    transition: all 0.4s ease;
+-moz-transition: background-size 0.4s ease;
+-ms-transition: background-size 0.4s ease;
+-o-transition: background-size 0.4s ease;
+-webkit-transition: all  0.4s ease;
+    opacity: 0.3;
+   
+}
+
+.take-picture:hover{
+    background-size: 110%;
+    background-position: center;
+}
+
+.show-lang{
+    float: right;
+       overflow: hidden;
+    background: url(../img/phone2.jpg);
+    background-size: 100%;
+    background-position: center;
+    transition: all 0.4s ease;
+-moz-transition: background-size 0.4s ease;
+-ms-transition: background-size 0.4s ease;
+-o-transition: background-size 0.4s ease;
+-webkit-transition: all  0.4s ease;
+    opacity: 0.3;
+}
+
+.show-lang:hover{
+    background-size: 110%;
+    background-position: center;
+}
+
+.inside{
+    position: absolute;
+    left: 10%;
+    margin-top: 50px;
+
+}
+
+  .show-mob{
+        display: none;
+    }
+
+.insidepic{
+    margin-top: 70px;
+}
+
+.phone-div{
+    background: #ffffff;
+    height: 550px;
+    clear: both;
+    margin: 0 auto -100px; 
+}
+
+.mobile-phone-div{
+    background: #ffffff;
+    height: 900px;
+    clear: both;
+    display: none;
+    margin: 0 auto -100px; 
+}
+
+.ul-def{
+    padding: 0px;
+}
+h3{
+    font-size: 40px;
+    font-family: "Roboto" !important;
+    color: #000000;
+    font-weight: 100;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+ul{
+    list-style: none;
+}
+
+li{
+    list-style: none !important;
+    text-align: center;
+}
+
+
+.inside2{
+    position: absolute;
+    float: right;
+    clear: both;
+    right: 10%;
+    margin-top: 50px;
+
+}
+
+ul{
+    font-family: "Roboto";
+    font-weight: 300;
+    font-size: 20px;
+    list-style: none;
+}
+
+li{
+    list-style: circle;
+}
+
+.outside{
+    position: relative;
+}
+
+.cam{
+    width: 150px;
+}
+
+.brain{
+    width: 200px;
+}
+
+.mock{
+    width: 220px;
+    float: right;
+}
+h2{
+    font-size: 40px;
+    font-family: "Roboto" !important;
+    color: #ffffff;
+    font-weight: 100;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+h4{
+    
+    font-size: 20px;
+    font-family: "Roboto" !important;
+    color: #ffffff;
+    font-weight: 100;
+    text-align: center;
+}
+
+.footer, .push {
+    height: 100px; /* .push must be the same height as .footer */
+}
+
+footer{
+    height:100px;
+    padding: 30px;
+    width: 100%;
+    clear: both;
+    background-color: #2F2D3A;
+}
+
+.closer{
+    margin-top: -20px;
+    margin-bottom: 90px;
+}
+
+
+@media screen and ( max-width: 1008px){
+    
+    .phone-div{
+        display: none;
+    }
+    
+    .mobile-phone-div{
+        display: block;
+        border: none;
+    }
+    
+    .mock{
+        margin-left: auto;
+        margin-right: auto;
+        width: 200px;
+        display: block;
+        float: none;
+    }
+}
+
+
+
+
+@media screen and ( max-width: 914px){
+    
+    
+    .display-pic{
+
+    height: 300px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    background-color: #2F2D3A;
+    display: block;
+}
+
+
+.pic-container{
+    width: 100%;
+    background-color: #2F2D3A;
+    margin: 0px;
+    display: block;
+}
+
+.take-picture{
+    float: none;
+    position: relative;
+    overflow: hidden;
+    background: url(../img/vacationphotos.jpg);
+    background-size: 100%;
+    background-position: center;
+    transition: all 0.4s ease;
+-moz-transition: background-size 0.4s ease;
+-ms-transition: background-size 0.4s ease;
+-o-transition: background-size 0.4s ease;
+-webkit-transition: all  0.4s ease;
+    opacity: 0.3;
+   
+}
+
+.take-picture:hover{
+    background-size: 100%;
+    background-position: center;
+}
+
+.show-lang{
+    float: none;
+       overflow: hidden;
+    position: relative;
+    background: url(../img/phone2.jpg);
+    background-size: 100%;
+    background-position: center;
+    transition: all 0.4s ease;
+-moz-transition: background-size 0.4s ease;
+-ms-transition: background-size 0.4s ease;
+-o-transition: background-size 0.4s ease;
+-webkit-transition: all  0.4s ease;
+    opacity: 0.3;
+}
+
+.show-lang:hover{
+    background-size: 100%;
+    background-position: center;
+}
+
+.inside{
+    position: absolute;
+    left: auto;
+    margin-top: -280px;
+    width: 100%;
+    z-index: 399;
+
+}
+    
+    .inside2{
+    position: absolute;
+        right: auto;
+    margin-top: -240px;
+    width: 100%;
+    z-index: 399;
+
+}
+
+.insidepic{
+    margin-top: 70px;
+}
+
+
+}
+
+
+
+@media screen and ( max-width: 767px){
+    
+    .show-mob{
+        display: block;
+    }
+    
+    .hide-mob{
+        display: none !important;
+    }
+    
+    
+    .btn{
+        display: none !important;
+    }
+    
+    .display-pic{
+
+    height: 200px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    background-color: #2F2D3A;
+    display: block;
+}
+
+
+.pic-container{
+    width: 100%;
+    background-color: #2F2D3A;
+    margin: 0px;
+    display: block;
+}
+
+.take-picture{
+    float: none;
+    position: relative;
+    overflow: hidden;
+    background: url(../img/vacationphotos.jpg);
+    background-size: 100%;
+    background-position: center;
+    transition: all 0.4s ease;
+-moz-transition: background-size 0.4s ease;
+-ms-transition: background-size 0.4s ease;
+-o-transition: background-size 0.4s ease;
+-webkit-transition: all  0.4s ease;
+    opacity: 0.3;
+   
+}
+
+.take-picture:hover{
+    background-size: 100%;
+    background-position: center;
+}
+
+.show-lang{
+    float: none;
+       overflow: hidden;
+    position: relative;
+    background: url(../img/phone2.jpg);
+    background-size: 100%;
+    background-position: center;
+    transition: all 0.4s ease;
+-moz-transition: background-size 0.4s ease;
+-ms-transition: background-size 0.4s ease;
+-o-transition: background-size 0.4s ease;
+-webkit-transition: all  0.4s ease;
+    opacity: 0.3;
+}
+
+.show-lang:hover{
+    background-size: 100%;
+    background-position: center;
+}
+
+.inside{
+    position: absolute;
+    left: auto;
+    margin-top: -180px;
+    width: 100%;
+    z-index: 399;
+
+}
+    
+    .inside2{
+    position: absolute;
+        right: auto;
+    margin-top: -140px;
+    width: 100%;
+    z-index: 399;
+
+}
+
+.insidepic{
+    margin-top: 70px;
+}
+    h2{
+    font-size: 20px;
+    font-family: "Roboto" !important;
+    color: #ffffff;
+    font-weight: 100;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+    
+    .cam{
+    width: 100px;
+}
+    
+    .brain{
+        width: 100px;
+    }
+
+}
+
+.navbar a{
+    color: #fff !important!
+}
