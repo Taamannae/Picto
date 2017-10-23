@@ -152,9 +152,8 @@ body{
 
 .phone-div{
     background: #ffffff;
-    height: 550px;
     clear: both;
-    margin: 0 auto -100px;
+    padding: 120px;
 }
 
 .mobile-phone-div{
@@ -221,7 +220,7 @@ li{
 
 .mock{
     width: 220px;
-    float: right;
+    float: left;
 }
 h2{
     font-size: 40px;
