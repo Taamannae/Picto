@@ -42,7 +42,7 @@ body{
 
 
 .jumbotron{
-    height:400px;
+    height:100%;
     background-color: #2F2D3A;
     background: url(../img/bg.png);
     background-position: center top;
@@ -73,7 +73,7 @@ body{
 }
 
 .jumbotron .container{
-    margin-top: 40px;
+    margin-top: 140px;
 
 }
 
