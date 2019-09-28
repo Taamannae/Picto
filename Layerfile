@@ -1,2 +1,3 @@
 FROM ubuntu:18.04
 RUN echo "hello world"
+RUN echo -e "$(tput setaf 160)Hi! I'm Tammy!"
